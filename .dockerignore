@@ -1,0 +1,47 @@
+# Dependencias (se instalan dentro del container)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build de Next.js
+.next/
+out/
+build/
+tsconfig.tsbuildinfo
+
+# Variables de entorno locales
+.env
+.env.local
+.env.development
+.env.test
+
+# Control de versiones
+.git/
+.gitignore
+
+# Herramientas de desarrollo
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# v0 internals
+.snowflake/
+.v0-trash/
+.vercel/
+__v0_runtime_loader.js
+__v0_devtools.tsx
+__v0_jsx-dev-runtime.ts
+
+# Sistema
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Docs
+README.md

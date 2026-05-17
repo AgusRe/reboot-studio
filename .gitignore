@@ -1,0 +1,40 @@
+# ─── v0 sandbox internals ────────────────────────────────────────────────────
+__v0_runtime_loader.js
+__v0_devtools.tsx
+__v0_jsx-dev-runtime.ts
+.snowflake/
+.v0-trash/
+.vercel/
+
+# ─── Variables de entorno (NUNCA subir al repo) ──────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ─── Next.js build / caché ───────────────────────────────────────────────────
+.next/
+out/
+build/
+tsconfig.tsbuildinfo
+
+# ─── Dependencias ────────────────────────────────────────────────────────────
+node_modules/
+pnpm-lock.yaml
+
+# ─── Claves y certificados ───────────────────────────────────────────────────
+*.pem
+*.key
+*.p12
+*.pfx
+
+# ─── Sistema operativo ───────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+.history/
+
+# ─── IDEs ────────────────────────────────────────────────────────────────────
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
