@@ -2,7 +2,7 @@
 
 import { motion, useInView, type Variants } from "framer-motion"
 import { useRef } from "react"
-import { Code2, Zap, Palette, Database, Workflow, Globe } from "lucide-react"
+import { Code2, Zap, Palette, Database, Workflow, Brain } from "lucide-react"
 
 const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const
 
@@ -12,6 +12,12 @@ const services = [
     title: "Diseño & Desarrollo Web",
     description: "Landing pages, sitios corporativos y aplicaciones web que convierten visitantes en clientes.",
     features: ["Landing pages de alta conversión", "Diseño UI/UX estratégico", "Desarrollo responsive"],
+  },
+  {
+    icon: Brain,
+    title: "Soluciones de IA",
+    description: "Potenciamos tu negocio conectando tus sistemas con modelos de lenguaje avanzados (LLMs) y agentes de IA.",
+    features: ["Asistentes y chatbots inteligentes", "Automatización cognitiva con LLMs", "Procesamiento y análisis de datos"],
   },
   {
     icon: Workflow,
@@ -36,12 +42,6 @@ const services = [
     title: "Optimización & Performance",
     description: "Tu sitio web más rápido, tu SEO mejorado, tus conversiones multiplicadas.",
     features: ["Auditorías de velocidad", "Optimización SEO técnico", "Mejora de conversiones"],
-  },
-  {
-    icon: Globe,
-    title: "Consultoría Digital",
-    description: "No sabes por dónde empezar? Te guiamos en la estrategia digital perfecta para tu negocio.",
-    features: ["Análisis de necesidades", "Roadmap tecnológico", "Acompañamiento continuo"],
   },
 ]
 

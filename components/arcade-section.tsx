@@ -160,11 +160,11 @@ function ReactionGame() {
 
       <button
         onClick={handleClick}
-        className={`w-full aspect-[2/1] rounded-xl flex flex-col items-center justify-center transition-all duration-200 ${
-          gameState === "waiting" ? "bg-secondary hover:bg-muted" :
-          gameState === "ready" ? "bg-destructive/20" :
-          gameState === "go" ? "bg-primary/30" :
-          "bg-secondary"
+        className={`w-full aspect-[2/1] rounded-xl flex flex-col items-center justify-center transition-all duration-200 border ${
+          gameState === "waiting" ? "bg-secondary hover:bg-muted border-transparent" :
+          gameState === "ready" ? "bg-destructive/20 border-transparent" :
+          gameState === "go" ? "bg-emerald-500/20 hover:bg-emerald-500/30 border-emerald-500/30" :
+          "bg-secondary border-transparent"
         }`}
       >
         {gameState === "waiting" && (
@@ -181,8 +181,8 @@ function ReactionGame() {
         )}
         {gameState === "go" && (
           <>
-            <Zap className="w-8 h-8 mb-2 text-primary" />
-            <span className="text-primary font-bold">¡AHORA!</span>
+            <Zap className="w-8 h-8 mb-2 text-emerald-400 animate-bounce" />
+            <span className="text-emerald-400 font-bold text-2xl tracking-wide animate-pulse">¡AHORA!</span>
           </>
         )}
         {gameState === "result" && (
@@ -212,17 +212,27 @@ function ClickChallenge() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [highScore, setHighScore] = useState(0)
 
+  // Game-over logic
   useEffect(() => {
-    if (isPlaying && timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft((t) => t - 1), 1000)
-      return () => clearTimeout(timer)
-    } else if (timeLeft === 0) {
+    if (timeLeft === 0 && isPlaying) {
       setIsPlaying(false)
       if (clicks > highScore) {
         setHighScore(clicks)
       }
     }
-  }, [isPlaying, timeLeft, clicks, highScore])
+  }, [timeLeft, isPlaying, clicks, highScore])
+
+  // Timer logic
+  useEffect(() => {
+    if (!isPlaying) return
+    if (timeLeft <= 0) return
+
+    const timer = setInterval(() => {
+      setTimeLeft((t) => t - 1)
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [isPlaying])
 
   const startGame = () => {
     setClicks(0)

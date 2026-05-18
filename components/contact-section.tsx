@@ -4,6 +4,8 @@ import { useState, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Send, Mail, MessageSquare, ArrowUpRight, CheckCircle2 } from 'lucide-react'
 
+const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const
+
 export function ContactSection() {
   const sectionRef = useRef(null)
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
@@ -41,13 +43,14 @@ export function ContactSection() {
     >
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Floating Panel Container */}
-        <div className="bg-card/80 backdrop-blur-xl border border-border rounded-3xl p-8 md:p-12 shadow-2xl">
+        <div className="bg-card/80 backdrop-blur-md border border-border rounded-3xl p-8 md:p-12 shadow-2xl">
           <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Left Column - Content */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
-            transition={{ duration: 0.6 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.8, ease: EASE_OUT_EXPO }}
+            style={{ willChange: "transform, opacity" }}
           >
             <span className="text-primary text-sm font-mono tracking-wider uppercase">Contacto</span>
             <h2 
@@ -103,9 +106,10 @@ export function ContactSection() {
 
           {/* Right Column - Form */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.8, delay: 0.15, ease: EASE_OUT_EXPO }}
+            style={{ willChange: "transform, opacity" }}
           >
             <div className="bg-card/50 border border-border rounded-3xl p-8 md:p-10">
               {formState === "sent" ? (

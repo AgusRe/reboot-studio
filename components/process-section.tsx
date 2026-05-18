@@ -60,31 +60,46 @@ function CardBorderAnimation({
   height: number
   radius?: number
 }) {
-  // Perimeter of the rounded rect
+  const x = 1, y = 1, w = width - 2, h = height - 2, r = radius
+
+  // Perimeter of the entire card (for the track background)
   const perim = 2 * (width + height) - 8 * radius + 2 * Math.PI * radius
-  const svgRef = useRef<SVGPathElement>(null)
+  
+  // Perimeter of each half path
+  const halfPerim = w + h - 4 * r + Math.PI * r
+
+  const svgRefTop = useRef<SVGPathElement>(null)
+  const svgRefBottom = useRef<SVGPathElement>(null)
 
   useEffect(() => {
-    const el = svgRef.current
-    if (!el) return
+    const elTop = svgRefTop.current
+    const elBottom = svgRefBottom.current
+    if (!elTop || !elBottom) return
+
     if (active && !filled) {
-      // Start the stroke trace
-      el.style.strokeDashoffset = String(perim)
-      const ctrl = animate(perim, 0, {
+      // Start the stroke trace from both paths
+      elTop.style.strokeDashoffset = String(halfPerim)
+      elBottom.style.strokeDashoffset = String(halfPerim)
+      const ctrl = animate(halfPerim, 0, {
         duration: STEP_FILL_MS / 1000,
         ease: "linear",
-        onUpdate: (v) => { el.style.strokeDashoffset = String(v) },
+        onUpdate: (v) => {
+          elTop.style.strokeDashoffset = String(v)
+          elBottom.style.strokeDashoffset = String(v)
+        },
       })
       return () => ctrl.stop()
     }
     if (filled) {
-      el.style.strokeDashoffset = "0"
+      elTop.style.strokeDashoffset = "0"
+      elBottom.style.strokeDashoffset = "0"
+    } else if (!active) {
+      elTop.style.strokeDashoffset = String(halfPerim)
+      elBottom.style.strokeDashoffset = String(halfPerim)
     }
-  }, [active, filled, perim])
+  }, [active, filled, halfPerim])
 
   // Build rounded-rect path starting at left-center (clockwise)
-  const x = 1, y = 1, w = width - 2, h = height - 2, r = radius
-  // Start at left-center, go down then clockwise
   const path = `
     M ${x} ${y + h / 2}
     L ${x} ${y + r}
@@ -96,6 +111,26 @@ function CardBorderAnimation({
     L ${x + r} ${y + h}
     Q ${x} ${y + h} ${x} ${y + h - r}
     L ${x} ${y + h / 2}
+  `.trim()
+
+  // Upper path: left-center -> up -> top-left -> top-right -> right-center
+  const pathTop = `
+    M ${x} ${y + h / 2}
+    L ${x} ${y + r}
+    Q ${x} ${y} ${x + r} ${y}
+    L ${x + w - r} ${y}
+    Q ${x + w} ${y} ${x + w} ${y + r}
+    L ${x + w} ${y + h / 2}
+  `.trim()
+
+  // Lower path: left-center -> down -> bottom-left -> bottom-right -> right-center
+  const pathBottom = `
+    M ${x} ${y + h / 2}
+    L ${x} ${y + h - r}
+    Q ${x} ${y + h} ${x + r} ${y + h}
+    L ${x + w - r} ${y + h}
+    Q ${x + w} ${y + h} ${x + w} ${y + h - r}
+    L ${x + w} ${y + h / 2}
   `.trim()
 
   return (
@@ -117,16 +152,29 @@ function CardBorderAnimation({
         strokeDashoffset="0"
         opacity={0.3}
       />
-      {/* Fill */}
+      {/* Upper Fill */}
       <path
-        ref={svgRef}
-        d={path}
+        ref={svgRefTop}
+        d={pathTop}
         fill="none"
         stroke="currentColor"
         strokeWidth="2"
         className="text-primary"
-        strokeDasharray={`${perim}`}
-        strokeDashoffset={String(perim)}
+        strokeDasharray={`${halfPerim}`}
+        strokeDashoffset={String(halfPerim)}
+        strokeLinecap="round"
+        style={{ willChange: "stroke-dashoffset" }}
+      />
+      {/* Lower Fill */}
+      <path
+        ref={svgRefBottom}
+        d={pathBottom}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        className="text-primary"
+        strokeDasharray={`${halfPerim}`}
+        strokeDashoffset={String(halfPerim)}
         strokeLinecap="round"
         style={{ willChange: "stroke-dashoffset" }}
       />
